@@ -34,8 +34,13 @@ module.exports = function (options) {
 		// have to create a new connection for each file otherwise they conflict
 		var ftp = new JSFtp(options);
 		var relativePath = file.path.replace(file.cwd + '/', '');
-    var localRelativePath = file.path.replace(path.join(file.cwd, localPath), '');
+		
+		
+		var fileBase = file.base?path.resolve(file.base) : file.cwd;
+		
+		var localRelativePath = file.path.replace(path.join(fileBase, localPath), '');
 		var finalRemotePath = path.join('/', remotePath, localRelativePath);
+		
 
 		ftp.mkdirp(path.dirname(finalRemotePath), function (err) {
 			if (err) {
